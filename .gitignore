@@ -22,3 +22,8 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# imeccable session artifacts (screenshots, question logs, direction payloads)
+.impeccable/screenshots/
+.impeccable/questions/
+.impeccable/direction-payload.json
