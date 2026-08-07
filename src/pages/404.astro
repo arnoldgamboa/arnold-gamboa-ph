@@ -1,0 +1,36 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const path = Astro.url.pathname;
+---
+
+<BaseLayout title="Page not found" description="The page you're looking for doesn't exist." path={path}>
+	<article class="page" style="text-align: center; padding-top: clamp(3rem, 10vw, 6rem); padding-bottom: clamp(3rem, 10vw, 6rem);">
+		<h1 style="font-size: clamp(3.5rem, 8vw, 6rem); margin-bottom: 0.5rem; line-height: 1;">404</h1>
+		<p class="page__lede" style="border: 0; padding: 0;">
+			This page doesn’t exist. It may have moved, or the link you followed may be out of date.
+		</p>
+		<div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-top: 1.75rem;">
+			<a href="/" class="nav-btn">Home</a>
+			<a href="/blog/" class="nav-btn">Blog</a>
+			<a href="/contact/" class="nav-btn">Contact</a>
+		</div>
+	</article>
+</BaseLayout>
+
+<style>
+	.nav-btn {
+		display: inline-flex;
+		align-items: center;
+		padding: 0.55rem 1.25rem;
+		background: var(--tab);
+		color: var(--paper);
+		font-weight: 700;
+		text-decoration: none;
+		border-radius: 2px;
+	}
+	.nav-btn:hover {
+		background: var(--stamp);
+		color: #fff;
+	}
+</style>

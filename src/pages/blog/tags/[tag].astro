@@ -1,0 +1,137 @@
+---
+import { getCollection } from "astro:content";
+import type { GetStaticPaths } from "astro";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+export const getStaticPaths = (async () => {
+	const posts = await getCollection("blog");
+	const tagSet = new Set<string>();
+	for (const p of posts) {
+		for (const t of p.data.tags) tagSet.add(t);
+	}
+	return [...tagSet].map((tag) => ({
+		params: { tag: tag.toLowerCase().replace(/\s+/g, "-") },
+		props: { tag, rawTag: tag },
+	}));
+}) satisfies GetStaticPaths;
+
+interface Props {
+	tag: string;
+	rawTag: string;
+}
+
+const { rawTag } = Astro.props;
+const posts = (await getCollection("blog"))
+	.filter((p) => p.data.tags.includes(rawTag))
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+function formatDate(d: Date) {
+	return d.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
+}
+---
+
+<BaseLayout
+	title={`${rawTag}`}
+	description={`Articles tagged #${rawTag} — Arnold Gamboa on ${rawTag.toLowerCase()}.`}
+	path={`/blog/tags/${rawTag.toLowerCase().replace(/\s+/g, "-")}/`}
+	ogImage="/images/arnold.jpg"
+>
+	<article class="page">
+		<header class="blog-head">
+			<h1>#{rawTag}</h1>
+			<p class="page__lede">
+				{posts.length} article{posts.length !== 1 ? "s" : ""} tagged #{rawTag}.
+			</p>
+		</header>
+
+		<ul class="blog-list">
+			{
+				posts.map((post) => (
+					<li>
+						<span class="blog-list__date">
+							<time datetime={post.data.pubDate.toISOString()}>
+								{formatDate(post.data.pubDate)}
+							</time>
+						</span>
+						<div class="blog-list__body">
+							<a class="blog-list__title" href={`/${post.data.slug}/`}>
+								{post.data.title}
+							</a>
+						</div>
+					</li>
+				))
+			}
+		</ul>
+
+		<a class="tag-back-link" href="/blog/">← All topics</a>
+	</article>
+</BaseLayout>
+
+<style>
+	.blog-head {
+		margin-bottom: 1.5rem;
+	}
+
+	.blog-head h1 {
+		margin: 0;
+		font-size: clamp(2rem, 4vw, 2.75rem);
+		font-weight: 700;
+		letter-spacing: -0.03em;
+		line-height: 1.1;
+		color: var(--ink);
+	}
+
+	.blog-list {
+		list-style: none;
+		margin: 0 0 1.75rem;
+		padding: 0;
+		border-top: 1px solid color-mix(in srgb, var(--rule) 45%, transparent);
+	}
+
+	.blog-list li {
+		display: grid;
+		grid-template-columns: 7.5rem minmax(0, 1fr);
+		gap: 0.75rem 1.25rem;
+		padding: 1.1rem 0;
+		border-bottom: 1px solid color-mix(in srgb, var(--rule) 35%, transparent);
+		align-items: baseline;
+	}
+
+	.blog-list__date {
+		font-size: var(--text-xs);
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: var(--rule);
+	}
+
+	.blog-list__title {
+		font-weight: 700;
+		font-size: 1.1rem;
+		text-decoration: none;
+		color: var(--ink);
+		text-wrap: pretty;
+	}
+
+	.blog-list__title:hover {
+		color: var(--stamp);
+	}
+
+	.tag-back-link {
+		display: inline-block;
+		margin-top: 0.5rem;
+		color: var(--tab);
+		font-weight: 700;
+		text-decoration: none;
+	}
+
+	.tag-back-link:hover {
+		color: var(--stamp);
+	}
+
+	@media (max-width: 520px) {
+		.blog-list li {
+			grid-template-columns: 1fr;
+			gap: 0.35rem;
+		}
+	}
+</style>

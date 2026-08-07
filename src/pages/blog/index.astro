@@ -1,0 +1,306 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const posts = (await getCollection("blog")).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+// all tags with counts, sorted by count desc
+const tagCounts = new Map<string, number>();
+for (const p of posts) {
+	for (const t of p.data.tags) tagCounts.set(t, (tagCounts.get(t) || 0) + 1);
+}
+const allTags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1]);
+
+function formatDate(d: Date) {
+	return d.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
+}
+---
+
+<BaseLayout
+	title="Blog"
+	description="Writing from Arnold Gamboa on AI, software, pastoral work, and small teams."
+	path="/blog/"
+>
+	<article class="page">
+		<header class="blog-head">
+			<h1>Blog</h1>
+			<p class="page__lede">
+				Notes on building software, using AI in real weekly work, and the overlap of
+				technology and ministry.
+			</p>
+		</header>
+
+		<ul class="blog-list" data-blog-list>
+			{
+				posts.map((post) => (
+					<li data-post-id={post.id} data-post-tags={post.data.tags.join("|")}>
+						<span class="blog-list__date">
+							<time datetime={post.data.pubDate.toISOString()}>
+								{formatDate(post.data.pubDate)}
+							</time>
+						</span>
+						<div class="blog-list__body">
+							<a class="blog-list__title" href={`/${post.data.slug}/`}>
+								{post.data.title}
+							</a>
+							{
+								post.data.tags.length > 0 && (
+									<p class="blog-list__tags">
+										{post.data.tags.slice(0, 3).map((tag) => (
+											<span>#{tag}</span>
+										))}
+									</p>
+								)
+							}
+						</div>
+					</li>
+				))
+			}
+		</ul>
+
+		<p class="blog-empty" data-blog-empty hidden>
+			Nothing tagged here yet.
+		</p>
+
+		{
+			allTags.length > 0 && (
+				<nav class="tag-cloud" aria-label="Topics" data-tag-cloud>
+					<span class="tag-cloud__label">Topics</span>
+					<div class="tag-cloud__list">
+						<a href="/blog/" class="tag-cloud__all" data-tag-all>All · {posts.length}</a>
+						{allTags.map(([tag, count]) => (
+							<a
+								href={`/blog/?tag=${encodeURIComponent(tag)}`}
+								data-tag-link={tag}
+							>
+								#{tag} <span class="tag-cloud__count">{count}</span>
+							</a>
+						))}
+					</div>
+				</nav>
+			)
+		}
+	</article>
+</BaseLayout>
+
+<style>
+	.blog-head {
+		margin-bottom: 1.5rem;
+	}
+
+	.blog-head h1 {
+		margin: 0;
+		font-size: clamp(2rem, 4vw, 2.75rem);
+		font-weight: 700;
+		letter-spacing: -0.03em;
+		line-height: 1.1;
+		color: var(--ink);
+	}
+	.tag-cloud {
+		margin: 2rem 0 0;
+		padding: 1rem 1.15rem;
+		background: color-mix(in srgb, var(--paper-deep) 75%, white);
+		border: 1px solid color-mix(in srgb, var(--rule) 30%, transparent);
+		border-radius: 2px;
+	}
+
+	.tag-cloud__label {
+		display: block;
+		margin-bottom: 0.6rem;
+		font-size: var(--text-xs);
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--tab);
+	}
+
+	.tag-cloud__list {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4rem;
+	}
+
+	.tag-cloud__list a {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.3rem;
+		padding: 0.3rem 0.65rem;
+		border: 1px solid color-mix(in srgb, var(--rule) 35%, transparent);
+		border-radius: 2px;
+		background: var(--paper);
+		font-size: var(--text-xs);
+		font-weight: 600;
+		color: var(--ink-soft);
+		text-decoration: none;
+	}
+
+	.tag-cloud__list a:hover {
+		border-color: var(--stamp);
+		color: var(--stamp);
+	}
+
+	.tag-cloud__list a[aria-current="true"] {
+		background: var(--tab);
+		border-color: var(--tab);
+		color: var(--paper);
+	}
+
+	.tag-cloud__count {
+		opacity: 0.6;
+		font-size: 0.72em;
+	}
+
+	.tag-cloud__all {
+		font-weight: 700;
+		color: var(--tab) !important;
+	}
+
+	.blog-list {
+		list-style: none;
+		margin: 0 0 1.75rem;
+		padding: 0;
+		border-top: 1px solid color-mix(in srgb, var(--rule) 45%, transparent);
+	}
+
+	.blog-list li[hidden] {
+		display: none;
+	}
+
+	.blog-list li {
+		display: grid;
+		grid-template-columns: 7.5rem minmax(0, 1fr);
+		gap: 0.75rem 1.25rem;
+		padding: 1.1rem 0;
+		border-bottom: 1px solid color-mix(in srgb, var(--rule) 35%, transparent);
+		align-items: baseline;
+	}
+
+	.blog-list__date {
+		font-size: var(--text-xs);
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: var(--rule);
+	}
+
+	.blog-list__body {
+		display: flex;
+		flex-direction: column;
+		gap: 0.35rem;
+		min-width: 0;
+	}
+
+	.blog-list__title {
+		font-weight: 700;
+		font-size: 1.1rem;
+		text-decoration: none;
+		color: var(--ink);
+		text-wrap: pretty;
+	}
+
+	.blog-list__title:hover {
+		color: var(--stamp);
+	}
+
+	.blog-list__tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.35rem 0.75rem;
+		margin: 0;
+		font-size: var(--text-xs);
+		color: var(--rule);
+	}
+
+	.blog-empty {
+		padding: 2rem 0;
+		color: var(--ink-soft);
+		font-style: italic;
+	}
+
+	.filter-status {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.5rem 1rem;
+		margin-bottom: 0.75rem;
+		padding: 0.6rem 0.9rem;
+		background: var(--tab);
+		color: var(--paper);
+		border-radius: 2px;
+		font-size: var(--text-sm);
+	}
+
+	.filter-status strong {
+		font-weight: 700;
+	}
+
+	.filter-status__clear {
+		color: var(--paper);
+		font-weight: 700;
+		text-decoration: none;
+		border-bottom: 1px solid color-mix(in srgb, var(--paper) 45%, transparent);
+	}
+
+	.filter-status__clear:hover {
+		color: #fff;
+		border-bottom-color: var(--stamp);
+	}
+
+	@media (max-width: 520px) {
+		.blog-list li {
+			grid-template-columns: 1fr;
+			gap: 0.35rem;
+		}
+	}
+</style>
+
+<script>
+	// Client-side tag filtering (static build has no query string at render time)
+	const list = document.querySelector("[data-blog-list]");
+	const items = [...(list?.querySelectorAll("li") || [])];
+	const empty = document.querySelector("[data-blog-empty]");
+	const tagLinks = [...document.querySelectorAll("[data-tag-link]")];
+	const allLink = document.querySelector("[data-tag-all]");
+
+	function applyFilter() {
+		// support both old (/blog/?q=) and new (?tag=) syntax
+		const params = new URLSearchParams(window.location.search);
+		const tag = (params.get("tag") || params.get("q") || "").trim();
+		let shown = 0;
+		for (const li of items) {
+			const match = !tag || (li.dataset.postTags || "").split("|").includes(tag);
+			li.hidden = !match;
+			if (match) shown++;
+		}
+		if (empty) empty.hidden = shown > 0;
+		for (const a of tagLinks) {
+			if (a.dataset.tagLink === tag) a.setAttribute("aria-current", "true");
+			else a.removeAttribute("aria-current");
+		}
+		if (allLink) {
+			if (!tag) allLink.setAttribute("aria-current", "true");
+			else allLink.removeAttribute("aria-current");
+		}
+
+		// visible feedback: filter status banner above the list
+		let status = document.querySelector("[data-filter-status]");
+		if (tag) {
+			if (!status) {
+				status = document.createElement("p");
+				status.className = "filter-status";
+				status.dataset.filterStatus = "";
+				list?.before(status);
+			}
+			status.innerHTML = `Showing <strong>${shown}</strong> post${shown === 1 ? "" : "s"} tagged <strong>#${tag.replace(/</g, "&lt;")}</strong> · <a class="filter-status__clear" href="/blog/">Show all</a>`;
+			status.hidden = false;
+			// scroll the filtered list into view so the change is obvious
+			const head = document.querySelector(".blog-head");
+			if (head) head.scrollIntoView({ behavior: "smooth", block: "start" });
+		} else if (status) {
+			status.hidden = true;
+		}
+	}
+
+	applyFilter();
+</script>

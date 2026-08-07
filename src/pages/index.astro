@@ -1,17 +1,160 @@
 ---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
 
+const latest = (await getCollection("blog"))
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+	.slice(0, 3);
+
+const jsonLd = JSON.stringify({
+	"@context": "https://schema.org",
+	"@type": ["Person", "ProfilePage"],
+	"@id": "https://arnold.gamboa.ph/#person",
+	name: "Arnold Gamboa",
+	url: "https://arnold.gamboa.ph",
+	image: "https://arnold.gamboa.ph/images/arnold.jpg",
+	description:
+		"Engineering leader, builder, and pastor — bridging faith and technology from Pasig City, Philippines.",
+	homeLocation: {
+		"@type": "Place",
+		address: { "@type": "PostalAddress", addressLocality: "Pasig City", addressCountry: "PH" },
+	},
+	sameAs: [
+		"https://linkedin.com/in/arnoldgamboa",
+		"https://twitter.com/arnoldgamboa",
+		"https://instagram.com/arnoldgamboa",
+		"https://fb.com/arnoldgamboa",
+		"https://arnoldcgamboa.com",
+	],
+	knowsAbout: [
+		"Engineering Leadership",
+		"Software Development",
+		"AI for Ministry",
+		"Pastoral Workflows",
+	],
+});
+
+function formatDate(d: Date) {
+	return d.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
+}
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout path="/" jsonLd={jsonLd}>
+	<article class="sheet">
+		<figure class="plate">
+			<div class="plate__frame">
+				<img
+					src="/images/arnold.jpg"
+					alt="Arnold Gamboa, smiling with hands clasped at a café table"
+					width="1086"
+					height="1449"
+					fetchpriority="high"
+				/>
+			</div>
+			<figcaption class="plate__caption">Build with Purpose</figcaption>
+		</figure>
+
+		<div class="sheet-body">
+			<header class="identity">
+				<h1>Hello, I’m Arnold.</h1>
+				<p class="identity__line">
+					I lead engineering teams, still ship code, and pastor a local church — bridging
+					faith and technology without treating either as a side note.
+				</p>
+			</header>
+
+			<section class="booking" aria-label="How to reach me">
+				<span class="booking__label">Find me</span>
+				<ul class="booking__links">
+					<li>
+						<a href="https://linkedin.com/in/arnoldgamboa" target="_blank" rel="noopener noreferrer"
+							>LinkedIn</a
+						>
+					</li>
+					<li>
+						<a href="https://twitter.com/arnoldgamboa" target="_blank" rel="noopener noreferrer"
+							>X</a
+						>
+					</li>
+					<li>
+						<a href="https://instagram.com/arnoldgamboa" target="_blank" rel="noopener noreferrer"
+							>Instagram</a
+						>
+					</li>
+					<li>
+						<a href="https://fb.com/arnoldgamboa" target="_blank" rel="noopener noreferrer">FB</a>
+					</li>
+					<li>
+						<a href="https://arnoldcgamboa.com" target="_blank" rel="noopener noreferrer"
+							>ArnoldCGamboa.com</a
+						>
+					</li>
+				</ul>
+				<div class="booking__primary">
+					<a href="mailto:arnold@gamboa.ph">Email Arnold</a>
+				</div>
+			</section>
+
+			<section class="coupons" aria-label="What I do">
+				<article class="coupon">
+					<h2>Engineering leader</h2>
+					<p>
+						Managing engineering teams is my main job — steering people and systems so
+						software that matters actually ships.
+					</p>
+				</article>
+				<article class="coupon">
+					<h2>Builder</h2>
+					<p>
+						On the side I still write code: client work, personal projects, and tools that
+						need to exist. I care about practical systems, not demos.
+					</p>
+				</article>
+				<article class="coupon">
+					<h2>Pastor</h2>
+					<p>
+						I lead a local church and help ministry leaders navigate AI with wisdom and
+						purpose — so churches can use modern tools without losing their voice.
+					</p>
+				</article>
+			</section>
+
+			<aside class="now-cue">
+				<h2>Right now</h2>
+				<p>
+					Outside day job and church life, most of my building energy is on{' '}
+					<strong>YouPastor</strong> — an AI workspace for pastors I’m preparing to launch.
+					Other projects are paused while I focus.
+				</p>
+				<div class="now-cue__links">
+					<a href="/now/">What I’m up to</a>
+					<a href="https://youpastor.com" target="_blank" rel="noopener noreferrer"
+						>YouPastor.com</a
+					>
+					<a href="/blog/">Writing</a>
+				</div>
+			</aside>
+
+			<section class="latest-posts" aria-label="Latest writing">
+				<h2>Latest writing</h2>
+				<ul class="latest-posts__list">
+					{
+						latest.map((post) => (
+							<li>
+								<span class="latest-posts__date">
+									<time datetime={post.data.pubDate.toISOString()}>
+										{formatDate(post.data.pubDate)}
+									</time>
+								</span>
+								<a class="latest-posts__title" href={`/${post.data.slug}/`}>
+									{post.data.title}
+								</a>
+							</li>
+						))
+					}
+				</ul>
+				<a class="latest-posts__all" href="/blog/">All posts →</a>
+			</section>
+		</div>
+	</article>
+</BaseLayout>
