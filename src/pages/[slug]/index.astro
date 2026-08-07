@@ -35,8 +35,8 @@ const postDate = post.data.pubDate.toLocaleDateString("en-GB", {
 });
 const isoDate = post.data.pubDate.toISOString();
 
-// page-specific og image: heroImage or portrait fallback
-const ogImage = post.data.heroImage || "/images/arnold.jpg";
+// page-specific og image: heroImage or og-default.png landscape fallback
+const ogImage = post.data.heroImage || "/images/og-default.png";
 
 // JSON-LD BlogPosting + BreadcrumbList
 const jsonLd = JSON.stringify([
@@ -57,7 +57,7 @@ const jsonLd = JSON.stringify([
 			name: "Arnold Gamboa",
 			url: "https://arnold.gamboa.ph",
 		},
-		image: post.data.heroImage || "https://arnold.gamboa.ph/images/arnold.jpg",
+		image: post.data.heroImage || "https://arnold.gamboa.ph/images/og-default.png",
 		mainEntityOfPage: {
 			"@type": "WebPage",
 			"@id": `https://arnold.gamboa.ph/${post.data.slug}/`,
