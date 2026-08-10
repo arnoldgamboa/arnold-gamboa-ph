@@ -10,7 +10,7 @@ interface Props {
 
 const {
 	title = "Arnold Gamboa",
-	description = "Engineering leader, builder, and pastor. Bridging faith and technology from Pasig City, Philippines.",
+	description = "Software engineering leader, builder, and pastor. Bridging faith and technology from Pasig City, Philippines.",
 	path = "/",
 	ogImage = "/images/og-default-v2.png",
 	ogType = "website",
@@ -63,14 +63,14 @@ function isCurrent(match: string) {
 		<meta property="og:image" content={ogImageUrl} />
 		<meta property="og:image:width" content="1200" />
 		<meta property="og:image:height" content="630" />
-		<meta property="og:image:alt" content="Arnold Gamboa — engineering leader, builder, and pastor" />
+		<meta property="og:image:alt" content="Arnold Gamboa — software engineering leader, builder, and pastor" />
 		<meta property="og:url" content={pageUrl} />
 		<meta property="og:site_name" content="Shipped &amp; Unfinished" />
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content={fullTitle} />
 		<meta name="twitter:description" content={description} />
 		<meta name="twitter:image" content={ogImageUrl} />
-		<meta name="twitter:image:alt" content="Arnold Gamboa — engineering leader, builder, and pastor" />
+		<meta name="twitter:image:alt" content="Arnold Gamboa — software engineering leader, builder, and pastor" />
 		<title>{fullTitle}</title>
 		<!-- JSON-LD -->
 		{jsonLd && <script type="application/ld+json" set:html={jsonLd}></script>}
