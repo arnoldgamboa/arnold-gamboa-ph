@@ -1,6 +1,6 @@
 ---
 title: "I Am Not My Work"
-description: "Identity beyond job titles, productivity, ministry platforms, outcomes, and comparison, grounded in John the Baptist's clear "I am not.""
+description: "Identity beyond job titles, productivity, ministry platforms, outcomes, and comparison, grounded in John the Baptist's clear \"I am not.\""
 pubDate: 2026-08-17
 slug: i-am-not-my-work
 tags: ["personal reflections", "product focus", "pastoral leadership"]
