@@ -3,7 +3,7 @@ title: "Your Ordinary Job Matters"
 description: "Your job can provide, serve people, and still remain only one part of your life. A field note on ordinary work, calling, and grace."
 pubDate: 2026-08-24
 slug: your-ordinary-job-matters
-heroImage: "/images/blog/your-ordinary-job-matters.webp"
+heroImage: "https://pub-4024e15ff8764b738f095498057d1554.r2.dev/blog/2026-08-24/your-ordinary-job-matters.webp"
 heroAlt: "Original featured image for Your Ordinary Job Matters"
 tags: ["personal reflections", "pastoral leadership", "work", "calling"]
 ---
