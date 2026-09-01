@@ -554,6 +554,15 @@ a:focus-visible {
 	color: var(--ink);
 }
 
+.page h2 {
+	margin: 1.85rem 0 0.65rem;
+	font-size: var(--text-lg);
+	font-weight: 700;
+	letter-spacing: -0.02em;
+	line-height: 1.2;
+	color: var(--ink);
+}
+
 .page__lede {
 	margin: 0 0 1.75rem;
 	padding-bottom: 1.25rem;
