@@ -3,8 +3,8 @@ title: "When Is It Time to Quit?"
 description: "Knowing when to stay and when to quit takes more than grit. It takes honesty about the cost, a clear path, and discernment about calling."
 pubDate: 2026-09-14
 slug: when-is-it-time-to-quit
-heroImage: "https://pub-4024e15ff8764b738f095498057d1554.r2.dev/blog/when-is-it-time-to-quit-arnold.jpg"
-heroAlt: "Arnold seated at a desk, considering a folder beside a laptop and notebook"
+heroImage: "https://pub-4024e15ff8764b738f095498057d1554.r2.dev/blog/when-is-it-time-to-quit-arnold-quote.jpg"
+heroAlt: "Arnold seated thoughtfully beside the words, Sometimes faithfulness means staying through the dip"
 tags: ["faith", "work", "calling", "discernment"]
 ---
 
