@@ -134,6 +134,76 @@ a:focus-visible {
 	letter-spacing: 0.02em;
 }
 
+.kit-menu-toggle {
+	display: none;
+	align-items: center;
+	justify-content: center;
+	min-width: 2.75rem;
+	min-height: 2.75rem;
+	padding: 0.55rem;
+	border: 1px solid color-mix(in srgb, var(--rule) 45%, transparent);
+	border-radius: 2px 2px 0 0;
+	background: color-mix(in srgb, var(--paper-deep) 70%, white);
+	color: var(--ink-soft);
+	font: inherit;
+	cursor: pointer;
+}
+
+.kit-menu-toggle:hover {
+	background: var(--paper);
+	color: var(--tab);
+	border-color: color-mix(in srgb, var(--tab) 35%, var(--rule));
+}
+
+.kit-menu-toggle:focus-visible {
+	outline: 2px solid var(--stamp);
+	outline-offset: 3px;
+}
+
+.kit-menu-toggle__icon {
+	position: relative;
+	display: block;
+	width: 1.2rem;
+	height: 0.9rem;
+}
+
+.kit-menu-toggle__icon span {
+	position: absolute;
+	left: 0;
+	width: 100%;
+	height: 2px;
+	background: currentColor;
+	border-radius: 999px;
+	transition: opacity 160ms ease, top 160ms ease, transform 160ms ease;
+}
+
+.kit-menu-toggle__icon span:nth-child(1) {
+	top: 0;
+}
+
+.kit-menu-toggle__icon span:nth-child(2) {
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.kit-menu-toggle__icon span:nth-child(3) {
+	top: calc(100% - 2px);
+}
+
+.kit-menu-toggle[aria-expanded="true"] .kit-menu-toggle__icon span:nth-child(1) {
+	top: 50%;
+	transform: translateY(-50%) rotate(45deg);
+}
+
+.kit-menu-toggle[aria-expanded="true"] .kit-menu-toggle__icon span:nth-child(2) {
+	opacity: 0;
+}
+
+.kit-menu-toggle[aria-expanded="true"] .kit-menu-toggle__icon span:nth-child(3) {
+	top: 50%;
+	transform: translateY(-50%) rotate(-45deg);
+}
+
 .kit-tabs {
 	display: flex;
 	flex-wrap: wrap;
@@ -174,6 +244,42 @@ a:focus-visible {
 
 .kit-tabs a.kit-tabs__external {
 	border-style: dashed;
+}
+
+@media (max-width: 768px) {
+	.kit-header {
+		align-items: center;
+		gap: 0.75rem 1rem;
+	}
+
+	.kit-header.js-menu .kit-menu-toggle {
+		display: inline-flex;
+	}
+
+	.kit-header.js-menu > nav {
+		width: 100%;
+	}
+
+	.kit-header.js-menu:not(.is-open) > nav {
+		display: none;
+	}
+
+	.kit-header.js-menu .kit-tabs {
+		flex-direction: column;
+		flex-wrap: nowrap;
+		width: 100%;
+		gap: 0.4rem;
+		padding-top: 0.25rem;
+	}
+
+	.kit-header.js-menu .kit-tabs li {
+		width: 100%;
+	}
+
+	.kit-header.js-menu .kit-tabs a {
+		width: 100%;
+		min-height: 2.75rem;
+	}
 }
 
 /* —— One-sheet home —— */

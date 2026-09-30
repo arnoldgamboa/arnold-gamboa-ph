@@ -104,8 +104,15 @@ function isCurrent(match: string) {
 					<span class="kit-mark__name">Arnold Gamboa</span>
 					<span class="kit-mark__title">Shipped &amp; Unfinished</span>
 				</a>
+				<button class="kit-menu-toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="primary-nav">
+					<span class="kit-menu-toggle__icon" aria-hidden="true">
+						<span></span>
+						<span></span>
+						<span></span>
+					</span>
+				</button>
 				<nav aria-label="Primary">
-					<ul class="kit-tabs">
+					<ul id="primary-nav" class="kit-tabs">
 						{
 							nav.map((item) => (
 								<li>
@@ -132,6 +139,55 @@ function isCurrent(match: string) {
 					</ul>
 				</nav>
 			</header>
+			<script is:inline>
+				(() => {
+					const header = document.querySelector(".kit-header");
+					const toggle = header?.querySelector(".kit-menu-toggle");
+					const nav = header?.querySelector("#primary-nav");
+
+					if (header && toggle && nav) {
+						header.classList.add("js-menu");
+
+						const closeMenu = ({ returnFocus = false } = {}) => {
+							header.classList.remove("is-open");
+							toggle.setAttribute("aria-expanded", "false");
+
+							if (returnFocus) {
+								toggle.focus();
+							}
+						};
+
+						toggle.addEventListener("click", () => {
+							const isOpen = header.classList.toggle("is-open");
+							toggle.setAttribute("aria-expanded", String(isOpen));
+						});
+
+						nav.addEventListener("click", (event) => {
+							if (event.target instanceof Element && event.target.closest("a")) {
+								closeMenu();
+							}
+						});
+
+						document.addEventListener("click", (event) => {
+							if (event.target instanceof Node && !header.contains(event.target)) {
+								closeMenu();
+							}
+						});
+
+						document.addEventListener("keydown", (event) => {
+							if (event.key === "Escape" && header.classList.contains("is-open")) {
+								closeMenu({ returnFocus: true });
+							}
+						});
+
+						window.matchMedia("(min-width: 769px)").addEventListener("change", (event) => {
+							if (event.matches) {
+								closeMenu();
+							}
+						});
+					}
+				})();
+			</script>
 
 			<main>
 				<slot />
