@@ -134,6 +134,30 @@ a:focus-visible {
 	letter-spacing: 0.02em;
 }
 
+.kit-brand {
+	display: flex;
+	align-items: flex-end;
+	gap: 0.6rem;
+}
+
+.kit-rss {
+	font-size: var(--text-xs);
+	font-weight: 600;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--ink-soft);
+	text-decoration: none;
+}
+
+.kit-rss:hover {
+	color: var(--stamp);
+}
+
+.kit-rss:focus-visible {
+	outline: 2px solid var(--stamp);
+	outline-offset: 3px;
+}
+
 .kit-menu-toggle {
 	display: none;
 	align-items: center;

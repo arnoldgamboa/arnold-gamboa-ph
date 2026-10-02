@@ -100,10 +100,13 @@ function isCurrent(match: string) {
 		-->
 		<div class="site-shell">
 			<header class="kit-header">
-				<a class="kit-mark" href="/">
-					<span class="kit-mark__name">Arnold Gamboa</span>
-					<span class="kit-mark__title">Shipped &amp; Unfinished</span>
-				</a>
+				<div class="kit-brand">
+					<a class="kit-mark" href="/">
+						<span class="kit-mark__name">Arnold Gamboa</span>
+						<span class="kit-mark__title">Shipped &amp; Unfinished</span>
+					</a>
+					<a class="kit-rss" href="/feed.xml" title="Subscribe via RSS">RSS</a>
+				</div>
 				<button class="kit-menu-toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="primary-nav">
 					<span class="kit-menu-toggle__icon" aria-hidden="true">
 						<span></span>
@@ -196,7 +199,7 @@ function isCurrent(match: string) {
 			<footer class="site-footer">
 				<span>Pasig City, Philippines</span>
 				<span>
-					<a href="mailto:arnold@gamboa.ph">arnold@gamboa.ph</a>
+					<a href="mailto:arnold@gamboa.ph">arnold@gamboa.ph</a> &middot; <a href="/feed.xml">RSS</a>
 				</span>
 			</footer>
 		</div>
