@@ -1,0 +1,16 @@
+# Fingerprinted Astro assets get new URLs whenever their contents change.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Briefly cache HTML so prefetched pages can be reused without revalidation.
+# Keep these rules separate from assets and feeds (matching headers are merged).
+/
+  Cache-Control: public, max-age=60, must-revalidate
+
+/:page/
+  Cache-Control: public, max-age=60, must-revalidate
+
+/blog/tags/:tag/
+  Cache-Control: public, max-age=60, must-revalidate
+
+# RSS, sitemaps, and unversioned images keep Cloudflare's revalidation default.

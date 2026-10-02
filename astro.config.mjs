@@ -6,5 +6,9 @@ import sitemap from '@astrojs/sitemap';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://arnold.gamboa.ph',
-  integrations: [sitemap()]
+  integrations: [sitemap()],
+  prefetch: {
+    prefetchAll: true,
+    defaultStrategy: 'hover'
+  }
 });

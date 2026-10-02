@@ -128,6 +128,7 @@ function isCurrent(match: string) {
 									) : (
 										<a
 											href={item.href}
+											data-astro-prefetch="viewport"
 											aria-current={isCurrent(item.match) ? "page" : undefined}
 										>
 											{item.label}
@@ -196,7 +197,7 @@ function isCurrent(match: string) {
 			<footer class="site-footer">
 				<span>Pasig City, Philippines</span>
 				<span>
-					<a href="mailto:arnold@gamboa.ph">arnold@gamboa.ph</a> &middot; <a href="/feed.xml">RSS</a>
+					<a href="mailto:arnold@gamboa.ph">arnold@gamboa.ph</a> &middot; <a href="/feed.xml" data-astro-prefetch="false">RSS</a>
 				</span>
 			</footer>
 		</div>
